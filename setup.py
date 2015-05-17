@@ -15,7 +15,7 @@ def long_description():
 
 if __name__ == '__main__':
     setup(
-        name='whl_setup',
+        name='whl.setup',
         description='a pip based replacement for ez_setup and setup_requires',
         long_description=long_description,
         use_scm_version=True,
@@ -23,10 +23,11 @@ if __name__ == '__main__':
             'setuptools',
             'setuptools_scm',
         ],
-        entrypoints={
-            'console_scripts': [
+        entry_points={
+            'console_scripts': {
                 'whl_setup_script_install = whl_setup:install',
-            ]
+            }
+
         },
         py_modules=[
             'whl_setup',

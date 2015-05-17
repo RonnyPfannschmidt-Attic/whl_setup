@@ -30,8 +30,6 @@ class Lazy(object):
 def setup(**kwargs):
     setup_requires = Lazy.resolve(kwargs.pop('setup_requires', None))
     if setup_requires:
-
-
         try:
             subprocess.check_output([
                 sys.executable, __file__,
@@ -45,6 +43,33 @@ def setup(**kwargs):
     from setuptools import setup as real_setup
     real_kwargs = {name: Lazy.resolve(value) for name, value in kwargs.items()}
     return real_setup(**real_kwargs)
+
+
+def get_existing_version(path):
+    if not os.path.isfile(path):
+        return None
+    with open(path) as fp:
+        lines = list(fp)
+    version = next((x for x in lines if x.startswith('__version__')), None)
+    if version is None:
+        return object
+    return version[version.find("'"):].strip("'\n")
+
+
+def install():
+    from pkg_resources import get_distribution
+    new_version = get_distribution('whl.setup').version
+    version = get_existing_version('whl_setup.py')
+    if version is object:
+        return
+    print(new_version, version)
+    import inspect
+    import whl_setup
+    source = inspect.getsource(whl_setup).replace(
+        "# VERSION GOES HERE", "__version__ = '%s'" % new_version)
+    with open('whl_setup.py', 'w') as fp:
+        fp.write(source)
+
 
 
 if __name__ == '__main__' and sys.argv[1] == 'install':
