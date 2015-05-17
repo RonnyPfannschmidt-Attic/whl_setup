@@ -18,6 +18,9 @@ if __name__ == '__main__':
         name='whl.setup',
         description='a pip based replacement for ez_setup and setup_requires',
         long_description=long_description,
+        author='Ronny Pfannschmidt',
+        author_email='opensource+whl.setup@ronnypfannschmidt.de',
+        url='https://github.com/RonnyPfannschmidt/whl_setup',
         use_scm_version=True,
         setup_requires=[
             'setuptools',
